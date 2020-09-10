@@ -1,19 +1,30 @@
 var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
 
+let sprite = document.getElementById("bricks_sprite");
+
+
 var size = 40;
 
-// bricks types
-const brickTypes = [".", "I", "o", "L", "T", "rL", "S", "rS"];
 
-// to choose random shape
-//const random = Math.floor(Math.random() * brickTypes.length);
-//console.log(random, brickTypes[random]);
+// Define the size of a frame
+let frameWidth = 84;
+let frameHeight = 84;
+// Rows and columns start from 0
+let column = 0;
+//ctx.drawImage(sprite, column*frameWidth, 0, frameWidth, frameHeight, 10, 30, size, size);
+
+
+// bricks types
+//const brickTypes = [".", "I", "o", "L", "T", "rL", "S", "rS"];
+// implemented bricks 
+const brickTypes = [".", "L"];
 
 // initial brick spawn parameters
 var x = canvas.width/2;
 var y = 0;
-var color = "rgba("+getRandomInt(255)+","+getRandomInt(255)+","+getRandomInt(255)+",1)";
+//var color = "rgba("+getRandomInt(255)+","+getRandomInt(255)+","+getRandomInt(255)+",1)";
+var color = Math.floor(Math.random() * Math.floor(7));
 var brick_type = ".";
 var brick_orientation = 1;
 
@@ -273,9 +284,26 @@ function brickInit()
 	// set new brick parameters
 	x = canvas.width/2;
 	y = -size;
-	// TODO : randomize brick shape
-	brick_type = "L";
-	color = "rgba("+getRandomInt(255)+","+getRandomInt(255)+","+getRandomInt(255)+",1)";
+	
+	// choose new random brick shape	
+	brick_type = getRandomBrick();
+	//brick_type = "L";
+
+	// TODO : choose randomly NEXT brick type, display it and store it
+	
+	// TODO : check if Tetris randomize brick orientation
+	// if not set default
+	//brick_orientation = 1;
+
+	// choose new random orientation
+	brick_orientation = Math.floor(Math.random() * Math.floor(4))+1;
+
+	//color = "rgba("+getRandomInt(255)+","+getRandomInt(255)+","+getRandomInt(255)+",1)";
+	
+	// new brick design
+	color = Math.floor(Math.random() * Math.floor(7));
+
+	//console.log("color :"+Math.floor(Math.random() * Math.floor(7)));
 
 	if(brick_count > 0)
 	{
@@ -294,69 +322,35 @@ function brickInit()
 	collision_detected = false;
 }
 
-// move current brick left or right
+// move or rotate current brick
 function move() 
 {
 	if(rightPressed && rightReleased) 
 	{
 		rightReleased = false;
-
-		// collision test
 		moveBrick("right");
-    	
-    	// TODO : replace this with detectWalls() to handle each shape
-    	if (x + size > canvas.width)
-    	{
-        	x = canvas.width - size;
-    	}
     	rightPressed = false;
-    	collision_detected = false;
 	}
 	else if(leftPressed && leftReleased) 
 	{
 		leftReleased = false;
-
-		// collision test
 		moveBrick("left");
-
-		// TODO : replace this with detectWalls() to handle each shape
-	    if (x < 0)
-	    {
-	        x = 0;
-	    }
 	    leftPressed = false;
-	    collision_detected = false;
 	}
 	else if(downPressed)
 	{
-		detectBottom();
-
-		// if bottom isn't reached :
 		moveBrick("down");
 	}
 	else if(upPressed && upReleased) 
 	{
 		upReleased = false;
-
-		// TODO : implement rotation collision detection
-
-	    if (brick_orientation < 4)
-	    {
-	        brick_orientation++;
-	    }
-	    else
-	    {
-	    	brick_orientation = 1;
-	    }
+		rotateBrick();	    
 	    upPressed = false;
 	}
 }
 
 function fall()
 {
-	detectBottom();
-
-	// if bottom isn't reached :
 	moveBrick("down");
 }
 
@@ -382,12 +376,32 @@ var fallId = setInterval(fall, 600);
 var drawId = setInterval(draw, 10);
 var moveId = setInterval(move, 50);
 
-// move current brick (and detect collisions)
+// rotate current brick (if there's no collision with walls or other bricks)
+function rotateBrick()
+{
+	// init collision boolean
+	collision_detected = false;
+
+	// if a collision wasn't detected, rotate brick
+	if(!collision_detected)
+	{
+		if (brick_orientation < 4)
+	        brick_orientation++;
+	    else
+	    	brick_orientation = 1;
+	}
+}
+
+// move current brick (if there's no collision with walls or other bricks)
 function moveBrick(direction)
 {
+	// init collision boolean
+	collision_detected = false;
+
 	switch(direction)
 	{
 		case "left":
+			// if brick count > 0, detect collisions with other bricks
 			if(brick_count > 0)
 			{
 				for(var i=0; i<brick_count; i++)
@@ -554,14 +568,23 @@ function moveBrick(direction)
 							break;
 					}
 				}
-				// if a collision wasn't detected, move
-				if(!collision_detected)
-					x -= dx;
 			}
-			else
+
+			// TODO : detect walls according to shape
+		    if (x-dx < 0)
+		    {
+		        collision_detected = true;
+		    }
+			
+			// if a collision wasn't detected, move
+			if(!collision_detected)
 				x -= dx;
+
+
+
 			break;
 		case "right":
+			// if brick count > 0, detect collisions with other bricks
 			if(brick_count > 0)
 			{
 				for(var i=0; i<brick_count; i++)
@@ -728,14 +751,23 @@ function moveBrick(direction)
 							break;
 					}	
 				}
-				// if a collision wasn't detected, move
-				if(!collision_detected)
-					x += dx;
 			}
-			else
+
+			// TODO : detect walls according to shape
+	    	if (x + size + dx > canvas.width)
+	    	{
+	        	collision_detected = true;
+	    	}
+
+	    	// if a collision wasn't detected, move
+	    	if(!collision_detected)
 				x += dx;
+
 			break;
 		case "down":
+			// if bottom collision detected, spawn new brick
+			detectBottom();
+			// else detect collisions between bricks & move :
 			if(brick_count > 0)
 			{
 				for(var i=0; i<brick_count; i++)
@@ -1063,6 +1095,13 @@ function detectBottom()
 	}
 }
 
+function getRandomBrick()
+{
+	// choose random shape
+	const random = Math.floor(Math.random() * brickTypes.length);
+	return brickTypes[random];
+}
+
 function getRandomInt(max) 
 {
   return Math.floor(Math.random() * Math.floor(max));
@@ -1074,53 +1113,67 @@ function drawBrick(x, y, color, brick_type, brick_orientation)
 
 	if(brick_type === ".")
 	{
-		ctx.beginPath();
+
+		ctx.drawImage(sprite, color*frameWidth, 0, frameWidth, frameHeight, x, y, size, size);
+
+		/*ctx.beginPath();
 		ctx.rect(x, y, size, size);
 		ctx.strokeStyle = "red";
 		ctx.stroke();
 		ctx.fillStyle = color;
 		ctx.fill();
-		ctx.closePath();
+		ctx.closePath();*/
 	}
 	else if(brick_type === "L")
 	{
 		if(brick_orientation === 1)
 		{
-			ctx.beginPath();
+
+			ctx.drawImage(sprite, color*frameWidth, 0, frameWidth, frameHeight, x, y, size, size);
+			ctx.drawImage(sprite, color*frameWidth, 0, frameWidth, frameHeight, x-size, y, size, size);
+			ctx.drawImage(sprite, color*frameWidth, 0, frameWidth, frameHeight, x+size, y, size, size);
+			ctx.drawImage(sprite, color*frameWidth, 0, frameWidth, frameHeight, x+size, y+size, size, size);
+
+			/*ctx.beginPath();
 			ctx.rect(x, y, size, size);
 			ctx.strokeStyle = "red";
 			ctx.stroke();
 			ctx.fillStyle = color;
 			ctx.fill();
-			ctx.closePath();
+			ctx.closePath();*/
 
-			ctx.beginPath();
+			/*ctx.beginPath();
 			ctx.rect(x-size, y, size, size);
 			ctx.strokeStyle = "red";
 			ctx.stroke();
 			ctx.fillStyle = color;
 			ctx.fill();
-			ctx.closePath();
+			ctx.closePath();*/
 
-			ctx.beginPath();
+			/*ctx.beginPath();
 			ctx.rect(x+size, y, size, size);
 			ctx.strokeStyle = "red";
 			ctx.stroke();
 			ctx.fillStyle = color;
 			ctx.fill();
-			ctx.closePath();
+			ctx.closePath();*/
 
-			ctx.beginPath();
+			/*ctx.beginPath();
 			ctx.rect(x+size, y+size, size, size);
 			ctx.strokeStyle = "red";
 			ctx.stroke();
 			ctx.fillStyle = color;
 			ctx.fill();
-			ctx.closePath();
+			ctx.closePath();*/
 		}
 		else if(brick_orientation === 2)
 		{
-			ctx.beginPath();
+			ctx.drawImage(sprite, color*frameWidth, 0, frameWidth, frameHeight, x, y, size, size);
+			ctx.drawImage(sprite, color*frameWidth, 0, frameWidth, frameHeight, x, y-size, size, size);
+			ctx.drawImage(sprite, color*frameWidth, 0, frameWidth, frameHeight, x, y+size, size, size);
+			ctx.drawImage(sprite, color*frameWidth, 0, frameWidth, frameHeight, x-size, y+size, size, size);
+
+			/*ctx.beginPath();
 			ctx.rect(x, y, size, size);
 			ctx.strokeStyle = "red";
 			ctx.stroke();
@@ -1150,11 +1203,16 @@ function drawBrick(x, y, color, brick_type, brick_orientation)
 			ctx.stroke();
 			ctx.fillStyle = color;
 			ctx.fill();
-			ctx.closePath();
+			ctx.closePath();*/
 		}
 		else if(brick_orientation === 3)
 		{
-			ctx.beginPath();
+			ctx.drawImage(sprite, color*frameWidth, 0, frameWidth, frameHeight, x, y, size, size);
+			ctx.drawImage(sprite, color*frameWidth, 0, frameWidth, frameHeight, x-size, y, size, size);
+			ctx.drawImage(sprite, color*frameWidth, 0, frameWidth, frameHeight, x+size, y, size, size);
+			ctx.drawImage(sprite, color*frameWidth, 0, frameWidth, frameHeight, x-size, y-size, size, size);
+
+			/*ctx.beginPath();
 			ctx.rect(x, y, size, size);
 			ctx.strokeStyle = "red";
 			ctx.stroke();
@@ -1184,11 +1242,16 @@ function drawBrick(x, y, color, brick_type, brick_orientation)
 			ctx.stroke();
 			ctx.fillStyle = color;
 			ctx.fill();
-			ctx.closePath();
+			ctx.closePath();*/
 		}
 		else if(brick_orientation === 4)
 		{
-			ctx.beginPath();
+			ctx.drawImage(sprite, color*frameWidth, 0, frameWidth, frameHeight, x, y, size, size);
+			ctx.drawImage(sprite, color*frameWidth, 0, frameWidth, frameHeight, x, y-size, size, size);
+			ctx.drawImage(sprite, color*frameWidth, 0, frameWidth, frameHeight, x, y+size, size, size);
+			ctx.drawImage(sprite, color*frameWidth, 0, frameWidth, frameHeight, x+size, y-size, size, size);
+
+			/*ctx.beginPath();
 			ctx.rect(x, y, size, size);
 			ctx.strokeStyle = "red";
 			ctx.stroke();
@@ -1218,7 +1281,7 @@ function drawBrick(x, y, color, brick_type, brick_orientation)
 			ctx.stroke();
 			ctx.fillStyle = color;
 			ctx.fill();
-			ctx.closePath();
+			ctx.closePath();*/
 		}
 	}
 }

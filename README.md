@@ -13,6 +13,7 @@ Just a personnal challenge. Work in progress !
 ## TODO
 - wall detection for L shape
 - rotation collision detection
+- randomly choose NEXT brick on brickInit(), store it and display it
 - line completion
 - score
 - more brick shapes

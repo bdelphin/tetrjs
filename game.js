@@ -2,18 +2,11 @@ var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
 
 let sprite = document.getElementById("bricks_sprite");
-
-
-var size = 40;
-
-
-// Define the size of a frame
+// Define the size of individual sprite frame
 let frameWidth = 84;
 let frameHeight = 84;
-// Rows and columns start from 0
-let column = 0;
-//ctx.drawImage(sprite, column*frameWidth, 0, frameWidth, frameHeight, 10, 30, size, size);
 
+var size = 40;
 
 // bricks types
 //const brickTypes = [".", "I", "o", "L", "T", "rL", "S", "rS"];
@@ -23,7 +16,6 @@ const brickTypes = [".", "L"];
 // initial brick spawn parameters
 var x = canvas.width/2;
 var y = 0;
-//var color = "rgba("+getRandomInt(255)+","+getRandomInt(255)+","+getRandomInt(255)+",1)";
 var color = Math.floor(Math.random() * Math.floor(7));
 var brick_type = ".";
 var brick_orientation = 1;
@@ -1113,58 +1105,16 @@ function drawBrick(x, y, color, brick_type, brick_orientation)
 
 	if(brick_type === ".")
 	{
-
 		ctx.drawImage(sprite, color*frameWidth, 0, frameWidth, frameHeight, x, y, size, size);
-
-		/*ctx.beginPath();
-		ctx.rect(x, y, size, size);
-		ctx.strokeStyle = "red";
-		ctx.stroke();
-		ctx.fillStyle = color;
-		ctx.fill();
-		ctx.closePath();*/
 	}
 	else if(brick_type === "L")
 	{
 		if(brick_orientation === 1)
 		{
-
 			ctx.drawImage(sprite, color*frameWidth, 0, frameWidth, frameHeight, x, y, size, size);
 			ctx.drawImage(sprite, color*frameWidth, 0, frameWidth, frameHeight, x-size, y, size, size);
 			ctx.drawImage(sprite, color*frameWidth, 0, frameWidth, frameHeight, x+size, y, size, size);
 			ctx.drawImage(sprite, color*frameWidth, 0, frameWidth, frameHeight, x+size, y+size, size, size);
-
-			/*ctx.beginPath();
-			ctx.rect(x, y, size, size);
-			ctx.strokeStyle = "red";
-			ctx.stroke();
-			ctx.fillStyle = color;
-			ctx.fill();
-			ctx.closePath();*/
-
-			/*ctx.beginPath();
-			ctx.rect(x-size, y, size, size);
-			ctx.strokeStyle = "red";
-			ctx.stroke();
-			ctx.fillStyle = color;
-			ctx.fill();
-			ctx.closePath();*/
-
-			/*ctx.beginPath();
-			ctx.rect(x+size, y, size, size);
-			ctx.strokeStyle = "red";
-			ctx.stroke();
-			ctx.fillStyle = color;
-			ctx.fill();
-			ctx.closePath();*/
-
-			/*ctx.beginPath();
-			ctx.rect(x+size, y+size, size, size);
-			ctx.strokeStyle = "red";
-			ctx.stroke();
-			ctx.fillStyle = color;
-			ctx.fill();
-			ctx.closePath();*/
 		}
 		else if(brick_orientation === 2)
 		{
@@ -1172,38 +1122,6 @@ function drawBrick(x, y, color, brick_type, brick_orientation)
 			ctx.drawImage(sprite, color*frameWidth, 0, frameWidth, frameHeight, x, y-size, size, size);
 			ctx.drawImage(sprite, color*frameWidth, 0, frameWidth, frameHeight, x, y+size, size, size);
 			ctx.drawImage(sprite, color*frameWidth, 0, frameWidth, frameHeight, x-size, y+size, size, size);
-
-			/*ctx.beginPath();
-			ctx.rect(x, y, size, size);
-			ctx.strokeStyle = "red";
-			ctx.stroke();
-			ctx.fillStyle = color;
-			ctx.fill();
-			ctx.closePath();
-
-			ctx.beginPath();
-			ctx.rect(x, y-size, size, size);
-			ctx.strokeStyle = "red";
-			ctx.stroke();
-			ctx.fillStyle = color;
-			ctx.fill();
-			ctx.closePath();
-
-			ctx.beginPath();
-			ctx.rect(x, y+size, size, size);
-			ctx.strokeStyle = "red";
-			ctx.stroke();
-			ctx.fillStyle = color;
-			ctx.fill();
-			ctx.closePath();
-
-			ctx.beginPath();
-			ctx.rect(x-size, y+size, size, size);
-			ctx.strokeStyle = "red";
-			ctx.stroke();
-			ctx.fillStyle = color;
-			ctx.fill();
-			ctx.closePath();*/
 		}
 		else if(brick_orientation === 3)
 		{
@@ -1211,38 +1129,6 @@ function drawBrick(x, y, color, brick_type, brick_orientation)
 			ctx.drawImage(sprite, color*frameWidth, 0, frameWidth, frameHeight, x-size, y, size, size);
 			ctx.drawImage(sprite, color*frameWidth, 0, frameWidth, frameHeight, x+size, y, size, size);
 			ctx.drawImage(sprite, color*frameWidth, 0, frameWidth, frameHeight, x-size, y-size, size, size);
-
-			/*ctx.beginPath();
-			ctx.rect(x, y, size, size);
-			ctx.strokeStyle = "red";
-			ctx.stroke();
-			ctx.fillStyle = color;
-			ctx.fill();
-			ctx.closePath();
-
-			ctx.beginPath();
-			ctx.rect(x-size, y, size, size);
-			ctx.strokeStyle = "red";
-			ctx.stroke();
-			ctx.fillStyle = color;
-			ctx.fill();
-			ctx.closePath();
-
-			ctx.beginPath();
-			ctx.rect(x+size, y, size, size);
-			ctx.strokeStyle = "red";
-			ctx.stroke();
-			ctx.fillStyle = color;
-			ctx.fill();
-			ctx.closePath();
-
-			ctx.beginPath();
-			ctx.rect(x-size, y-size, size, size);
-			ctx.strokeStyle = "red";
-			ctx.stroke();
-			ctx.fillStyle = color;
-			ctx.fill();
-			ctx.closePath();*/
 		}
 		else if(brick_orientation === 4)
 		{
@@ -1250,38 +1136,6 @@ function drawBrick(x, y, color, brick_type, brick_orientation)
 			ctx.drawImage(sprite, color*frameWidth, 0, frameWidth, frameHeight, x, y-size, size, size);
 			ctx.drawImage(sprite, color*frameWidth, 0, frameWidth, frameHeight, x, y+size, size, size);
 			ctx.drawImage(sprite, color*frameWidth, 0, frameWidth, frameHeight, x+size, y-size, size, size);
-
-			/*ctx.beginPath();
-			ctx.rect(x, y, size, size);
-			ctx.strokeStyle = "red";
-			ctx.stroke();
-			ctx.fillStyle = color;
-			ctx.fill();
-			ctx.closePath();
-
-			ctx.beginPath();
-			ctx.rect(x, y-size, size, size);
-			ctx.strokeStyle = "red";
-			ctx.stroke();
-			ctx.fillStyle = color;
-			ctx.fill();
-			ctx.closePath();
-
-			ctx.beginPath();
-			ctx.rect(x, y+size, size, size);
-			ctx.strokeStyle = "red";
-			ctx.stroke();
-			ctx.fillStyle = color;
-			ctx.fill();
-			ctx.closePath();
-
-			ctx.beginPath();
-			ctx.rect(x+size, y-size, size, size);
-			ctx.strokeStyle = "red";
-			ctx.stroke();
-			ctx.fillStyle = color;
-			ctx.fill();
-			ctx.closePath();*/
 		}
 	}
 }

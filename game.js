@@ -1,12 +1,19 @@
 var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
 
+var score_text = document.getElementById("score");
+var score = 0;
+
+var audio_clear = new Audio('clear.wav');
+
 let sprite = document.getElementById("bricks_sprite");
 // Define the size of individual sprite frame
 let frameWidth = 84;
 let frameHeight = 84;
 
 var size = 40;
+
+console.log("nb bricks = "+canvas.width/size);
 
 // bricks types
 //const brickTypes = [".", "I", "o", "L", "T", "rL", "S", "rS"];
@@ -39,10 +46,10 @@ var collision_detected = false;
 
 // bricks array & counter
 var bricks = [];
-for(var i=0; i<99; i++) 
+/*for(var i=0; i<99; i++) 
 {
     bricks[i] = { x: 0, y: 0, color: ""};
-}
+}*/
 var brick_count = 0;
 
 // spawn new brick
@@ -54,10 +61,12 @@ function brickInit()
 	{
 		case ".": // OK
 			// if brick is a dot, no conversion needed
-			bricks[brick_count].x = x;
+			bricks[brick_count] = { x: x, y: y, color: color, brick_type: brick_type};
+
+			/*bricks[brick_count].x = x;
 			bricks[brick_count].y = y;
 			bricks[brick_count].color = color;
-			bricks[brick_count].brick_type = brick_type;
+			bricks[brick_count].brick_type = brick_type;*/
 			//bricks[brick_count].brick_orientation = brick_orientation; // useless
 			brick_count++;
 
@@ -94,124 +103,140 @@ function brickInit()
 			{
 				case 1:
 					// central dot
-					bricks[brick_count].x = x;
+					bricks[brick_count] = { x: x, y: y, color: color, brick_type: "."};
+					/*bricks[brick_count].x = x;
 					bricks[brick_count].y = y;
 					bricks[brick_count].color = color;
-					bricks[brick_count].brick_type = ".";
+					bricks[brick_count].brick_type = ".";*/
 					brick_count++;
 
 					// left brick
-					bricks[brick_count].x = x-size;
+					bricks[brick_count] = { x: x-size, y: y, color: color, brick_type: "."};
+					/*bricks[brick_count].x = x-size;
 					bricks[brick_count].y = y;
 					bricks[brick_count].color = color;
-					bricks[brick_count].brick_type = ".";
+					bricks[brick_count].brick_type = ".";*/
 					brick_count++;
 
 					// right brick
-					bricks[brick_count].x = x+size;
+					bricks[brick_count] = { x: x+size, y: y, color: color, brick_type: "."};
+					/*bricks[brick_count].x = x+size;
 					bricks[brick_count].y = y;
 					bricks[brick_count].color = color;
-					bricks[brick_count].brick_type = ".";
+					bricks[brick_count].brick_type = ".";*/
 					brick_count++;
 
 					//bottom right brick
-					bricks[brick_count].x = x+size;
+					bricks[brick_count] = { x: x+size, y: y+size, color: color, brick_type: "."};
+					/*bricks[brick_count].x = x+size;
 					bricks[brick_count].y = y+size;
 					bricks[brick_count].color = color;
-					bricks[brick_count].brick_type = ".";
+					bricks[brick_count].brick_type = ".";*/
 					brick_count++;
 
 					console.log("saved brick L 1");
 					break;
 				case 2:
 					// central dot
-					bricks[brick_count].x = x;
+					bricks[brick_count] = { x: x, y: y, color: color, brick_type: "."};
+					/*bricks[brick_count].x = x;
 					bricks[brick_count].y = y;
 					bricks[brick_count].color = color;
-					bricks[brick_count].brick_type = ".";
+					bricks[brick_count].brick_type = ".";*/
 					brick_count++;
 
 					// bottom left brick
-					bricks[brick_count].x = x-size;
+					bricks[brick_count] = { x: x-size, y: y+size, color: color, brick_type: "."};
+					/*bricks[brick_count].x = x-size;
 					bricks[brick_count].y = y+size;
 					bricks[brick_count].color = color;
-					bricks[brick_count].brick_type = ".";
+					bricks[brick_count].brick_type = ".";*/
 					brick_count++;
 
 					// top brick
-					bricks[brick_count].x = x;
+					bricks[brick_count] = { x: x, y: y-size, color: color, brick_type: "."};
+					/*bricks[brick_count].x = x;
 					bricks[brick_count].y = y-size;
 					bricks[brick_count].color = color;
-					bricks[brick_count].brick_type = ".";
+					bricks[brick_count].brick_type = ".";*/
 					brick_count++;
 
 					//bottom brick
-					bricks[brick_count].x = x;
+					bricks[brick_count] = { x: x, y: y+size, color: color, brick_type: "."};
+					/*bricks[brick_count].x = x;
 					bricks[brick_count].y = y+size;
 					bricks[brick_count].color = color;
-					bricks[brick_count].brick_type = ".";
+					bricks[brick_count].brick_type = ".";*/
 					brick_count++;
 
 					console.log("saved brick L 2");
 				break;
 				case 3:
 					// central dot
-					bricks[brick_count].x = x;
+					bricks[brick_count] = { x: x, y: y, color: color, brick_type: "."};
+					/*bricks[brick_count].x = x;
 					bricks[brick_count].y = y;
 					bricks[brick_count].color = color;
-					bricks[brick_count].brick_type = ".";
+					bricks[brick_count].brick_type = ".";*/
 					brick_count++;
 
 					// left brick
-					bricks[brick_count].x = x-size;
+					bricks[brick_count] = { x: x-size, y: y, color: color, brick_type: "."};
+					/*bricks[brick_count].x = x-size;
 					bricks[brick_count].y = y;
 					bricks[brick_count].color = color;
-					bricks[brick_count].brick_type = ".";
+					bricks[brick_count].brick_type = ".";*/
 					brick_count++;
 
 					// right brick
-					bricks[brick_count].x = x+size;
+					bricks[brick_count] = { x: x+size, y: y, color: color, brick_type: "."};
+					/*bricks[brick_count].x = x+size;
 					bricks[brick_count].y = y;
 					bricks[brick_count].color = color;
-					bricks[brick_count].brick_type = ".";
+					bricks[brick_count].brick_type = ".";*/
 					brick_count++;
 
 					//top left brick
-					bricks[brick_count].x = x-size;
+					bricks[brick_count] = { x: x-size, y: y-size, color: color, brick_type: "."};
+					/*bricks[brick_count].x = x-size;
 					bricks[brick_count].y = y-size;
 					bricks[brick_count].color = color;
-					bricks[brick_count].brick_type = ".";
+					bricks[brick_count].brick_type = ".";*/
 					brick_count++;
 
 					console.log("saved brick L 3");
 					break;
 				case 4:
 					// central dot
-					bricks[brick_count].x = x;
+					bricks[brick_count] = { x: x, y: y, color: color, brick_type: "."};
+					/*bricks[brick_count].x = x;
 					bricks[brick_count].y = y;
 					bricks[brick_count].color = color;
-					bricks[brick_count].brick_type = ".";
+					bricks[brick_count].brick_type = ".";*/
 					brick_count++;
 
 					// top right brick
-					bricks[brick_count].x = x+size;
+					bricks[brick_count] = { x: x+size, y: y-size, color: color, brick_type: "."};
+					/*bricks[brick_count].x = x+size;
 					bricks[brick_count].y = y-size;
 					bricks[brick_count].color = color;
-					bricks[brick_count].brick_type = ".";
+					bricks[brick_count].brick_type = ".";*/
 					brick_count++;
 
 					// top brick
-					bricks[brick_count].x = x;
+					bricks[brick_count] = { x: x, y: y-size, color: color, brick_type: "."};
+					/*bricks[brick_count].x = x;
 					bricks[brick_count].y = y-size;
 					bricks[brick_count].color = color;
-					bricks[brick_count].brick_type = ".";
+					bricks[brick_count].brick_type = ".";*/
 					brick_count++;
 
 					//bottom brick
-					bricks[brick_count].x = x;
+					bricks[brick_count] = { x: x, y: y+size, color: color, brick_type: "."};
+					/*bricks[brick_count].x = x;
 					bricks[brick_count].y = y+size;
 					bricks[brick_count].color = color;
-					bricks[brick_count].brick_type = ".";
+					bricks[brick_count].brick_type = ".";*/
 					brick_count++;
 
 					console.log("saved brick L 4");
@@ -272,6 +297,8 @@ function brickInit()
 		break;
 	}
 	
+	// line completion check
+	detectLineCompletion();
 
 	// set new brick parameters
 	x = canvas.width/2;
@@ -974,6 +1001,107 @@ function moveBrick(direction)
 		default:
 			console.log("/!\ Wrong direction given when detecting collisions");
 	}
+}
+
+function detectLineCompletion()
+{
+	// compute number of blocks in line
+	var nb_bricks_in_line = canvas.width/size;
+	var nb_bricks_height = canvas.height/size;
+
+	var lines_completed_array = [];
+
+	// for every line
+	for(var k=0; k<nb_bricks_height; k++)
+	{
+		var column = [];
+		// for each column
+		for(var j=0; j<nb_bricks_in_line; j++)
+		{
+			// assume brick isn't present
+			column[j] = false;
+		}
+
+		// for each column
+		for(var j=0; j<nb_bricks_in_line; j++)
+		{
+			// check if a brick is present
+			for(var i=0; i<brick_count; i++)
+			{
+				if(bricks[i].y===k*size && bricks[i].x===j*size)
+				{
+					//console.log("a brick is present is pos "+j);
+					column[j] = true;
+				}
+			}
+		}
+
+		// assume line is completed
+		var line_completed = true;
+		for(var j=0; j<nb_bricks_in_line; j++)
+		{
+			if(column[j]===false)
+			{
+				line_completed = false;
+			}
+		}
+
+		if(line_completed)
+		{
+			lines_completed_array.push(k);
+		}
+	}
+
+	if(lines_completed_array.length>0)
+	{
+		audio_clear.play();
+	}
+
+	switch(lines_completed_array.length)
+	{
+		case 1:
+			score+=40;
+			score_text.innerHTML = score;
+			break;
+		case 2:
+			score+=100;
+			score_text.innerHTML = score;
+			break;
+		case 3:
+			score+=300;
+			score_text.innerHTML = score;
+			break;
+		case 4:
+			score+=1200;
+			score_text.innerHTML = score;
+			break;
+	}
+
+	for(k=0;k<lines_completed_array.length;k++)
+	{
+		console.log("line "+lines_completed_array[k]+" is complete !");
+
+		// clear line
+		var i = bricks.length;
+		while (i--) 
+		{
+		    if (bricks[i].y===lines_completed_array[k]*size) 
+		    { 
+		        bricks.splice(i, 1);
+				brick_count--;
+		    } 
+		}
+
+		// shift remaining bricks
+		for(var i=0; i<brick_count; i++)
+		{
+			// for bricks above
+			if (bricks[i].y<lines_completed_array[k]*size)
+			{
+				bricks[i].y+=size;
+			}	
+		}
+	}	
 }
 
 // detect if brick has reached bottom

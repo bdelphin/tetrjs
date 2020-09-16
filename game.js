@@ -350,8 +350,10 @@ function brickInit()
 		}
 		
 		// useless ?
-		//downPressed = false;
 		//collision_detected = false;
+
+		// needed to prevent always full falling speed glitch after game over
+		downPressed = false;
 	}
 	else
 	{
@@ -378,6 +380,7 @@ function brickInit()
 		next_color = Math.floor(Math.random() * Math.floor(7));
 
 		firstBrick = false;
+		downPressed = false;
 	}
 
 	// display next brick

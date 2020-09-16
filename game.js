@@ -4,6 +4,8 @@ var ctx = canvas.getContext("2d");
 var score_text = document.getElementById("score");
 var score = 0;
 
+var next_brick_text = document.getElementById("next_brick");
+
 var audio_clear = new Audio('clear.wav');
 
 let sprite = document.getElementById("bricks_sprite");
@@ -13,19 +15,27 @@ let frameHeight = 84;
 
 var size = 40;
 
-console.log("nb bricks = "+canvas.width/size);
-
 // bricks types
 //const brickTypes = [".", "I", "o", "L", "T", "rL", "S", "rS"];
 // implemented bricks 
 const brickTypes = [".", "L"];
 
 // initial brick spawn parameters
-var x = canvas.width/2;
+/*var x = canvas.width/2;
 var y = 0;
 var color = Math.floor(Math.random() * Math.floor(7));
 var brick_type = ".";
-var brick_orientation = 1;
+var brick_orientation = 1;*/
+var x;
+var y;
+var color;
+var brick_type;
+var brick_orientation;
+
+// next bricks parameters
+var next_color;
+var next_brick_type;
+var next_brick_orientation;
 
 // movement
 var dx = size;
@@ -52,280 +62,283 @@ var bricks = [];
 }*/
 var brick_count = 0;
 
+// spawn first brick
+var firstBrick = true;
+brickInit();
+
 // spawn new brick
 function brickInit()
 {
-	// store brick parameters
-	// convert all shapes to single bricks for easier collision detection
-	switch(brick_type)
+	if(!firstBrick)
 	{
-		case ".": // OK
-			// if brick is a dot, no conversion needed
-			bricks[brick_count] = { x: x, y: y, color: color, brick_type: brick_type};
+		// store brick parameters
+		// convert all shapes to single bricks for easier collision detection
+		switch(brick_type)
+		{
+			case ".": // OK
+				// if brick is a dot, no conversion needed
+				bricks[brick_count] = { x: x, y: y, color: color, brick_type: brick_type};
 
-			/*bricks[brick_count].x = x;
-			bricks[brick_count].y = y;
-			bricks[brick_count].color = color;
-			bricks[brick_count].brick_type = brick_type;*/
-			//bricks[brick_count].brick_orientation = brick_orientation; // useless
-			brick_count++;
+				/*bricks[brick_count].x = x;
+				bricks[brick_count].y = y;
+				bricks[brick_count].color = color;
+				bricks[brick_count].brick_type = brick_type;*/
+				//bricks[brick_count].brick_orientation = brick_orientation; // useless
+				brick_count++;
 
-			console.log("saved brick .");
+				console.log("saved brick .");
+				break;
+			case "I":
+				switch(brick_orientation)
+				{
+					case "1":
+					break;
+					case "2":
+					break;
+					case "3":
+					break;
+					case "4":
+					break;
+				}
 			break;
-		case "I":
-			switch(brick_orientation)
-			{
-				case "1":
-				break;
-				case "2":
-				break;
-				case "3":
-				break;
-				case "4":
-				break;
-			}
-		break;
-		case "o":
-			switch(brick_orientation)
-			{
-				case "1":
-				break;
-				case "2":
-				break;
-				case "3":
-				break;
-				case "4":
-				break;
-			}
-		break;
-		case "L": // OK
-			switch(brick_orientation)
-			{
-				case 1:
-					// central dot
-					bricks[brick_count] = { x: x, y: y, color: color, brick_type: "."};
-					/*bricks[brick_count].x = x;
-					bricks[brick_count].y = y;
-					bricks[brick_count].color = color;
-					bricks[brick_count].brick_type = ".";*/
-					brick_count++;
-
-					// left brick
-					bricks[brick_count] = { x: x-size, y: y, color: color, brick_type: "."};
-					/*bricks[brick_count].x = x-size;
-					bricks[brick_count].y = y;
-					bricks[brick_count].color = color;
-					bricks[brick_count].brick_type = ".";*/
-					brick_count++;
-
-					// right brick
-					bricks[brick_count] = { x: x+size, y: y, color: color, brick_type: "."};
-					/*bricks[brick_count].x = x+size;
-					bricks[brick_count].y = y;
-					bricks[brick_count].color = color;
-					bricks[brick_count].brick_type = ".";*/
-					brick_count++;
-
-					//bottom right brick
-					bricks[brick_count] = { x: x+size, y: y+size, color: color, brick_type: "."};
-					/*bricks[brick_count].x = x+size;
-					bricks[brick_count].y = y+size;
-					bricks[brick_count].color = color;
-					bricks[brick_count].brick_type = ".";*/
-					brick_count++;
-
-					console.log("saved brick L 1");
+			case "o":
+				switch(brick_orientation)
+				{
+					case "1":
 					break;
-				case 2:
-					// central dot
-					bricks[brick_count] = { x: x, y: y, color: color, brick_type: "."};
-					/*bricks[brick_count].x = x;
-					bricks[brick_count].y = y;
-					bricks[brick_count].color = color;
-					bricks[brick_count].brick_type = ".";*/
-					brick_count++;
-
-					// bottom left brick
-					bricks[brick_count] = { x: x-size, y: y+size, color: color, brick_type: "."};
-					/*bricks[brick_count].x = x-size;
-					bricks[brick_count].y = y+size;
-					bricks[brick_count].color = color;
-					bricks[brick_count].brick_type = ".";*/
-					brick_count++;
-
-					// top brick
-					bricks[brick_count] = { x: x, y: y-size, color: color, brick_type: "."};
-					/*bricks[brick_count].x = x;
-					bricks[brick_count].y = y-size;
-					bricks[brick_count].color = color;
-					bricks[brick_count].brick_type = ".";*/
-					brick_count++;
-
-					//bottom brick
-					bricks[brick_count] = { x: x, y: y+size, color: color, brick_type: "."};
-					/*bricks[brick_count].x = x;
-					bricks[brick_count].y = y+size;
-					bricks[brick_count].color = color;
-					bricks[brick_count].brick_type = ".";*/
-					brick_count++;
-
-					console.log("saved brick L 2");
-				break;
-				case 3:
-					// central dot
-					bricks[brick_count] = { x: x, y: y, color: color, brick_type: "."};
-					/*bricks[brick_count].x = x;
-					bricks[brick_count].y = y;
-					bricks[brick_count].color = color;
-					bricks[brick_count].brick_type = ".";*/
-					brick_count++;
-
-					// left brick
-					bricks[brick_count] = { x: x-size, y: y, color: color, brick_type: "."};
-					/*bricks[brick_count].x = x-size;
-					bricks[brick_count].y = y;
-					bricks[brick_count].color = color;
-					bricks[brick_count].brick_type = ".";*/
-					brick_count++;
-
-					// right brick
-					bricks[brick_count] = { x: x+size, y: y, color: color, brick_type: "."};
-					/*bricks[brick_count].x = x+size;
-					bricks[brick_count].y = y;
-					bricks[brick_count].color = color;
-					bricks[brick_count].brick_type = ".";*/
-					brick_count++;
-
-					//top left brick
-					bricks[brick_count] = { x: x-size, y: y-size, color: color, brick_type: "."};
-					/*bricks[brick_count].x = x-size;
-					bricks[brick_count].y = y-size;
-					bricks[brick_count].color = color;
-					bricks[brick_count].brick_type = ".";*/
-					brick_count++;
-
-					console.log("saved brick L 3");
+					case "2":
 					break;
-				case 4:
-					// central dot
-					bricks[brick_count] = { x: x, y: y, color: color, brick_type: "."};
-					/*bricks[brick_count].x = x;
-					bricks[brick_count].y = y;
-					bricks[brick_count].color = color;
-					bricks[brick_count].brick_type = ".";*/
-					brick_count++;
-
-					// top right brick
-					bricks[brick_count] = { x: x+size, y: y-size, color: color, brick_type: "."};
-					/*bricks[brick_count].x = x+size;
-					bricks[brick_count].y = y-size;
-					bricks[brick_count].color = color;
-					bricks[brick_count].brick_type = ".";*/
-					brick_count++;
-
-					// top brick
-					bricks[brick_count] = { x: x, y: y-size, color: color, brick_type: "."};
-					/*bricks[brick_count].x = x;
-					bricks[brick_count].y = y-size;
-					bricks[brick_count].color = color;
-					bricks[brick_count].brick_type = ".";*/
-					brick_count++;
-
-					//bottom brick
-					bricks[brick_count] = { x: x, y: y+size, color: color, brick_type: "."};
-					/*bricks[brick_count].x = x;
-					bricks[brick_count].y = y+size;
-					bricks[brick_count].color = color;
-					bricks[brick_count].brick_type = ".";*/
-					brick_count++;
-
-					console.log("saved brick L 4");
+					case "3":
 					break;
-			}
-		break;
-		case "T":
-			switch(brick_orientation)
-			{
-				case 1:
-				break;
-				case 2:
-				break;
-				case 3:
-				break;
-				case 4:
-				break;
-			}
-		break;
-		case "rL":
-			switch(brick_orientation)
-			{
-				case 1:
-				break;
-				case 2:
-				break;
-				case 3:
-				break;
-				case 4:
-				break;
-			}
-		break;
-		case "S":
-			switch(brick_orientation)
-			{
-				case 1:
-				break;
-				case 2:
-				break;
-				case 3:
-				break;
-				case 4:
-				break;
-			}
-		break;
-		case "rS":
-			switch(brick_orientation)
-			{
-				case 1:
-				break;
-				case 2:
-				break;
-				case 3:
-				break;
-				case 4:
-				break;
-			}
-		break;
-	}
-	
-	// line completion check
-	detectLineCompletion();
+					case "4":
+					break;
+				}
+			break;
+			case "L": // OK
+				switch(brick_orientation)
+				{
+					case 1:
+						// central dot
+						bricks[brick_count] = { x: x, y: y, color: color, brick_type: "."};
+						/*bricks[brick_count].x = x;
+						bricks[brick_count].y = y;
+						bricks[brick_count].color = color;
+						bricks[brick_count].brick_type = ".";*/
+						brick_count++;
 
-	// set new brick parameters
-	x = canvas.width/2;
-	y = -size;
-	
-	// choose new random brick shape	
-	brick_type = getRandomBrick();
-	//brick_type = "L";
+						// left brick
+						bricks[brick_count] = { x: x-size, y: y, color: color, brick_type: "."};
+						/*bricks[brick_count].x = x-size;
+						bricks[brick_count].y = y;
+						bricks[brick_count].color = color;
+						bricks[brick_count].brick_type = ".";*/
+						brick_count++;
 
-	// TODO : choose randomly NEXT brick type, display it and store it
-	
-	// TODO : check if Tetris randomize brick orientation
-	// if not set default
-	//brick_orientation = 1;
+						// right brick
+						bricks[brick_count] = { x: x+size, y: y, color: color, brick_type: "."};
+						/*bricks[brick_count].x = x+size;
+						bricks[brick_count].y = y;
+						bricks[brick_count].color = color;
+						bricks[brick_count].brick_type = ".";*/
+						brick_count++;
 
-	// choose new random orientation
-	brick_orientation = Math.floor(Math.random() * Math.floor(4))+1;
+						//bottom right brick
+						bricks[brick_count] = { x: x+size, y: y+size, color: color, brick_type: "."};
+						/*bricks[brick_count].x = x+size;
+						bricks[brick_count].y = y+size;
+						bricks[brick_count].color = color;
+						bricks[brick_count].brick_type = ".";*/
+						brick_count++;
 
-	//color = "rgba("+getRandomInt(255)+","+getRandomInt(255)+","+getRandomInt(255)+",1)";
-	
-	// new brick design
-	color = Math.floor(Math.random() * Math.floor(7));
+						console.log("saved brick L 1");
+						break;
+					case 2:
+						// central dot
+						bricks[brick_count] = { x: x, y: y, color: color, brick_type: "."};
+						/*bricks[brick_count].x = x;
+						bricks[brick_count].y = y;
+						bricks[brick_count].color = color;
+						bricks[brick_count].brick_type = ".";*/
+						brick_count++;
 
-	//console.log("color :"+Math.floor(Math.random() * Math.floor(7)));
+						// bottom left brick
+						bricks[brick_count] = { x: x-size, y: y+size, color: color, brick_type: "."};
+						/*bricks[brick_count].x = x-size;
+						bricks[brick_count].y = y+size;
+						bricks[brick_count].color = color;
+						bricks[brick_count].brick_type = ".";*/
+						brick_count++;
 
-	if(brick_count > 0)
-	{
+						// top brick
+						bricks[brick_count] = { x: x, y: y-size, color: color, brick_type: "."};
+						/*bricks[brick_count].x = x;
+						bricks[brick_count].y = y-size;
+						bricks[brick_count].color = color;
+						bricks[brick_count].brick_type = ".";*/
+						brick_count++;
+
+						//bottom brick
+						bricks[brick_count] = { x: x, y: y+size, color: color, brick_type: "."};
+						/*bricks[brick_count].x = x;
+						bricks[brick_count].y = y+size;
+						bricks[brick_count].color = color;
+						bricks[brick_count].brick_type = ".";*/
+						brick_count++;
+
+						console.log("saved brick L 2");
+					break;
+					case 3:
+						// central dot
+						bricks[brick_count] = { x: x, y: y, color: color, brick_type: "."};
+						/*bricks[brick_count].x = x;
+						bricks[brick_count].y = y;
+						bricks[brick_count].color = color;
+						bricks[brick_count].brick_type = ".";*/
+						brick_count++;
+
+						// left brick
+						bricks[brick_count] = { x: x-size, y: y, color: color, brick_type: "."};
+						/*bricks[brick_count].x = x-size;
+						bricks[brick_count].y = y;
+						bricks[brick_count].color = color;
+						bricks[brick_count].brick_type = ".";*/
+						brick_count++;
+
+						// right brick
+						bricks[brick_count] = { x: x+size, y: y, color: color, brick_type: "."};
+						/*bricks[brick_count].x = x+size;
+						bricks[brick_count].y = y;
+						bricks[brick_count].color = color;
+						bricks[brick_count].brick_type = ".";*/
+						brick_count++;
+
+						//top left brick
+						bricks[brick_count] = { x: x-size, y: y-size, color: color, brick_type: "."};
+						/*bricks[brick_count].x = x-size;
+						bricks[brick_count].y = y-size;
+						bricks[brick_count].color = color;
+						bricks[brick_count].brick_type = ".";*/
+						brick_count++;
+
+						console.log("saved brick L 3");
+						break;
+					case 4:
+						// central dot
+						bricks[brick_count] = { x: x, y: y, color: color, brick_type: "."};
+						/*bricks[brick_count].x = x;
+						bricks[brick_count].y = y;
+						bricks[brick_count].color = color;
+						bricks[brick_count].brick_type = ".";*/
+						brick_count++;
+
+						// top right brick
+						bricks[brick_count] = { x: x+size, y: y-size, color: color, brick_type: "."};
+						/*bricks[brick_count].x = x+size;
+						bricks[brick_count].y = y-size;
+						bricks[brick_count].color = color;
+						bricks[brick_count].brick_type = ".";*/
+						brick_count++;
+
+						// top brick
+						bricks[brick_count] = { x: x, y: y-size, color: color, brick_type: "."};
+						/*bricks[brick_count].x = x;
+						bricks[brick_count].y = y-size;
+						bricks[brick_count].color = color;
+						bricks[brick_count].brick_type = ".";*/
+						brick_count++;
+
+						//bottom brick
+						bricks[brick_count] = { x: x, y: y+size, color: color, brick_type: "."};
+						/*bricks[brick_count].x = x;
+						bricks[brick_count].y = y+size;
+						bricks[brick_count].color = color;
+						bricks[brick_count].brick_type = ".";*/
+						brick_count++;
+
+						console.log("saved brick L 4");
+						break;
+				}
+			break;
+			case "T":
+				switch(brick_orientation)
+				{
+					case 1:
+					break;
+					case 2:
+					break;
+					case 3:
+					break;
+					case 4:
+					break;
+				}
+			break;
+			case "rL":
+				switch(brick_orientation)
+				{
+					case 1:
+					break;
+					case 2:
+					break;
+					case 3:
+					break;
+					case 4:
+					break;
+				}
+			break;
+			case "S":
+				switch(brick_orientation)
+				{
+					case 1:
+					break;
+					case 2:
+					break;
+					case 3:
+					break;
+					case 4:
+					break;
+				}
+			break;
+			case "rS":
+				switch(brick_orientation)
+				{
+					case 1:
+					break;
+					case 2:
+					break;
+					case 3:
+					break;
+					case 4:
+					break;
+				}
+			break;
+		}
+		
+		// line completion check
+		detectLineCompletion();
+
+		// set new brick parameters
+		x = canvas.width/2;
+		y = -size;
+		
+		// pickup previously generated shape
+		brick_type = next_brick_type;
+		// choose next brick shape randomly
+		next_brick_type = getRandomBrick();	
+
+		// pickup previously generated orientation
+		brick_orientation = next_brick_orientation;
+		// choose next orientation randomly
+		next_brick_orientation = Math.floor(Math.random() * Math.floor(4))+1;
+		// TODO : check if Tetris randomize brick orientation
+		// if not set default
+		//brick_orientation = 1;
+
+		// pickup previously generated color
+		color = next_color;
+		// choose next color randomly
+		next_color = Math.floor(Math.random() * Math.floor(7));
+		
+		// check if brick has reached top
 		for(var i=0; i<brick_count; i++)
 		{
 			if(y+dy>=bricks[i].y && x==bricks[i].x)
@@ -335,10 +348,40 @@ function brickInit()
 				brick_count = 0;
 			}
 		}
+		
+		// useless ?
+		//downPressed = false;
+		//collision_detected = false;
+	}
+	else
+	{
+		// set new brick parameters
+		x = canvas.width/2;
+		y = -size;
+		
+		// pickup random shape for first brick
+		brick_type = getRandomBrick();
+		// choose next brick shape randomly
+		next_brick_type = getRandomBrick();	
+
+		// pickup random orientation for first brick
+		brick_orientation = Math.floor(Math.random() * Math.floor(4))+1;
+		// choose next orientation randomly
+		next_brick_orientation = Math.floor(Math.random() * Math.floor(4))+1;
+		// TODO : check if Tetris randomize brick orientation
+		// if not set default
+		//brick_orientation = 1;
+
+		// pickup random color for first brick
+		color = Math.floor(Math.random() * Math.floor(7));
+		// choose next color randomly
+		next_color = Math.floor(Math.random() * Math.floor(7));
+
+		firstBrick = false;
 	}
 
-	downPressed = false;
-	collision_detected = false;
+	// display next brick
+	next_brick_text.innerHTML = next_brick_type;
 }
 
 // move or rotate current brick
@@ -1352,7 +1395,7 @@ function moveBrick(direction)
 					switch(brick_type)
 					{
 						case ".": // OK
-							if(y+dy>=bricks[i].y && x==bricks[i].x)
+							if(y+dy==bricks[i].y && x==bricks[i].x)
 							{
 				  				collision_detected = true;
 				  				console.log("Collision detected preventing bottom movement.");
@@ -1389,25 +1432,25 @@ function moveBrick(direction)
 							{
 								case 1:
 									//center brick
-									if(y+dy>=bricks[i].y && x==bricks[i].x)
+									if(y+dy==bricks[i].y && x==bricks[i].x)
 									{
 						  				collision_detected = true;
 						  				console.log("Collision detected preventing bottom movement.");
 									}
 									//left brick
-									if(y+dy>=bricks[i].y && x-size==bricks[i].x)
+									if(y+dy==bricks[i].y && x-size==bricks[i].x)
 									{
 						  				collision_detected = true;
 						  				console.log("Collision detected preventing bottom movement.");
 									}
 									//right brick
-									if(y+dy>=bricks[i].y && x+size==bricks[i].x)
+									if(y+dy==bricks[i].y && x+size==bricks[i].x)
 									{
 						  				collision_detected = true;
 						  				console.log("Collision detected preventing bottom movement.");
 									}
 									//bottom right brick
-									if(y+size+dy>=bricks[i].y && x+size==bricks[i].x)
+									if(y+size+dy==bricks[i].y && x+size==bricks[i].x)
 									{
 						  				collision_detected = true;
 						  				console.log("Collision detected preventing bottom movement.");
@@ -1415,25 +1458,25 @@ function moveBrick(direction)
 									break;
 								case 2:
 									//center brick
-									if(y+dy>=bricks[i].y && x==bricks[i].x)
+									if(y+dy==bricks[i].y && x==bricks[i].x)
 									{
 						  				collision_detected = true;
 						  				console.log("Collision detected preventing bottom movement.");
 									}
 									//bottom brick
-									if(y+size+dy>=bricks[i].y && x==bricks[i].x)
+									if(y+size+dy==bricks[i].y && x==bricks[i].x)
 									{
 						  				collision_detected = true;
 						  				console.log("Collision detected preventing bottom movement.");
 									}
 									//bottom left brick
-									if(y+size+dy>=bricks[i].y && x-size==bricks[i].x)
+									if(y+size+dy==bricks[i].y && x-size==bricks[i].x)
 									{
 						  				collision_detected = true;
 						  				console.log("Collision detected preventing bottom movement.");
 									}
 									//top brick - useless
-									if(y-size+dy>=bricks[i].y && x==bricks[i].x)
+									if(y-size+dy==bricks[i].y && x==bricks[i].x)
 									{
 						  				collision_detected = true;
 						  				console.log("Collision detected preventing bottom movement.");
@@ -1441,25 +1484,25 @@ function moveBrick(direction)
 									break;
 								case 3:
 									//center brick
-									if(y+dy>=bricks[i].y && x==bricks[i].x)
+									if(y+dy==bricks[i].y && x==bricks[i].x)
 									{
 						  				collision_detected = true;
 						  				console.log("Collision detected preventing bottom movement.");
 									}
 									//left brick
-									if(y+dy>=bricks[i].y && x-size==bricks[i].x)
+									if(y+dy==bricks[i].y && x-size==bricks[i].x)
 									{
 						  				collision_detected = true;
 						  				console.log("Collision detected preventing bottom movement.");
 									}
 									//right brick
-									if(y+dy>=bricks[i].y && x+size==bricks[i].x)
+									if(y+dy==bricks[i].y && x+size==bricks[i].x)
 									{
 						  				collision_detected = true;
 						  				console.log("Collision detected preventing bottom movement.");
 									}
 									//top left brick
-									if(y-size+dy>=bricks[i].y && x-size==bricks[i].x)
+									if(y-size+dy==bricks[i].y && x-size==bricks[i].x)
 									{
 						  				collision_detected = true;
 						  				console.log("Collision detected preventing bottom movement.");
@@ -1467,25 +1510,25 @@ function moveBrick(direction)
 									break;
 								case 4:
 									//center brick
-									if(y+dy>=bricks[i].y && x==bricks[i].x)
+									if(y+dy==bricks[i].y && x==bricks[i].x)
 									{
 						  				collision_detected = true;
 						  				console.log("Collision detected preventing bottom movement.");
 									}
 									//bottom brick
-									if(y+size+dy>=bricks[i].y && x==bricks[i].x)
+									if(y+size+dy==bricks[i].y && x==bricks[i].x)
 									{
 						  				collision_detected = true;
 						  				console.log("Collision detected preventing bottom movement.");
 									}
 									//top right brick
-									if(y-size+dy>=bricks[i].y && x+size==bricks[i].x)
+									if(y-size+dy==bricks[i].y && x+size==bricks[i].x)
 									{
 						  				collision_detected = true;
 						  				console.log("Collision detected preventing bottom movement.");
 									}
 									//top brick - useless
-									if(y-size+dy>=bricks[i].y && x==bricks[i].x)
+									if(y-size+dy==bricks[i].y && x==bricks[i].x)
 									{
 						  				collision_detected = true;
 						  				console.log("Collision detected preventing bottom movement.");

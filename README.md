@@ -16,12 +16,10 @@ Just a personnal challenge. Work in progress !
 - score : OK
 
 ## TODO
-- resolve down collision glitch
-- randomly choose NEXT brick on brickInit(), store it and display it
-
 - more brick shapes
 - levels
 
+- improve next brick display
 - game menu w/ high scores (stored in json ? xml ?)
 - html design
 - improve CSS structure (grid ?)

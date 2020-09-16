@@ -401,6 +401,330 @@ function rotateBrick()
 	// init collision boolean
 	collision_detected = false;
 
+	// if brick count > 0, detect collisions with other bricks
+	if(brick_count > 0)
+	{
+		for(var i=0; i<brick_count; i++)
+		{
+			switch(brick_type)
+			{
+				case ".": // OK !
+					// no rotation - skip
+					break;
+				case "I": // TODO
+					switch(brick_orientation)
+					{
+						case 1:
+						break;
+						case 2:
+						break;
+						case 3:
+						break;
+						case 4:
+						break;
+					}
+					break;
+				case "o": // TODO
+					switch(brick_orientation)
+					{
+						case 1:
+						break;
+						case 2:
+						break;
+						case 3:
+						break;
+						case 4:
+						break;
+					}
+					break;
+				case "L": // OK !
+					switch(brick_orientation)
+					{
+						case 1: // next orientation is 2
+							// top brick
+							if(x==bricks[i].x && y-size==bricks[i].y)
+							{
+								collision_detected = true;
+								console.log("Collision detected preventing rotation.");
+							}
+							// bottom brick
+							if(x==bricks[i].x && y+size==bricks[i].y)
+							{
+								collision_detected = true;
+								console.log("Collision detected preventing rotation.");
+							}
+							// bottom left brick
+							if(x-size==bricks[i].x && y+size==bricks[i].y)
+							{
+								collision_detected = true;
+								console.log("Collision detected preventing rotation.");
+							}
+							break;
+						case 2: // next is 3
+							// right brick
+							if(x+size==bricks[i].x && y==bricks[i].y)
+							{
+								collision_detected = true;
+								console.log("Collision detected preventing rotation.");
+							}
+							// top left brick
+							if(x-size==bricks[i].x && y-size==bricks[i].y)
+							{
+								collision_detected = true;
+								console.log("Collision detected preventing rotation.");
+							}
+							// left brick
+							if(x-size==bricks[i].x && y==bricks[i].y)
+							{
+								collision_detected = true;
+								console.log("Collision detected preventing rotation.");
+							}
+							break;
+						case 3: // next is 4
+							// top brick
+							if(x==bricks[i].x && y-size==bricks[i].y)
+							{
+								collision_detected = true;
+								console.log("Collision detected preventing rotation.");
+							}
+							// top right brick
+							if(x+size==bricks[i].x && y-size==bricks[i].y)
+							{
+								collision_detected = true;
+								console.log("Collision detected preventing rotation.");
+							}
+							// bottom brick
+							if(x==bricks[i].x && y+size==bricks[i].y)
+							{
+								collision_detected = true;
+								console.log("Collision detected preventing rotation.");
+							}
+							break;
+						case 4: // next is 1
+							// left brick
+							if(x-size==bricks[i].x && y==bricks[i].y)
+							{
+								collision_detected = true;
+								console.log("Collision detected preventing rotation.");
+							}
+							// right brick
+							if(x+size==bricks[i].x && y==bricks[i].y)
+							{
+								collision_detected = true;
+								console.log("Collision detected preventing rotation.");
+							}
+							// bottom right brick
+							if(x+size==bricks[i].x && y+size==bricks[i].y)
+							{
+								collision_detected = true;
+								console.log("Collision detected preventing rotation.");
+							}
+							break;
+					}
+					break;
+				case "T": // TODO
+					switch(brick_orientation)
+					{
+						case 1:
+						break;
+						case 2:
+						break;
+						case 3:
+						break;
+						case 4:
+						break;
+					}
+					break;
+				case "rL": // TODO
+					switch(brick_orientation)
+					{
+						case 1:
+						break;
+						case 2:
+						break;
+						case 3:
+						break;
+						case 4:
+						break;
+					}
+					break;
+				case "S": // TODO
+					switch(brick_orientation)
+					{
+						case 1:
+						break;
+						case 2:
+						break;
+						case 3:
+						break;
+						case 4:
+						break;
+					}
+					break;
+				case "rS": // TODO
+					switch(brick_orientation)
+					{
+						case 1:
+						break;
+						case 2:
+						break;
+						case 3:
+						break;
+						case 4:
+						break;
+					}
+					break;
+			}	
+		}
+	}
+
+	// detect collisions with walls
+	switch(brick_type)
+	{
+		case ".":
+			// no rotation - skip
+			break;
+		case "I": // TODO
+			switch(brick_orientation)
+			{
+				case 1:
+				break;
+				case 2:
+				break;
+				case 3:
+				break;
+				case 4:
+				break;
+			}
+			break;
+		case "o": // TODO
+			switch(brick_orientation)
+			{
+				case 1:
+				break;
+				case 2:
+				break;
+				case 3:
+				break;
+				case 4:
+				break;
+			}
+			break;
+		case "L": // OK !
+			switch(brick_orientation)
+			{
+				case 1: // next orientation is 2
+					// central brick with right wall
+					if(x+size > canvas.width)
+					{
+						collision_detected = true;
+						console.log("Collision detected preventing rotation.");
+					}
+					// bottom left brick with left wall
+					if(x-size < 0)
+					{
+						collision_detected = true;
+						console.log("Collision detected preventing rotation.");
+					}
+					break;
+				case 2: // next is 3
+					// right brick with right wall
+					if(x+size+size > canvas.width)
+					{
+						collision_detected = true;
+						console.log("Collision detected preventing rotation.");
+					}
+					// left brick with left wall
+					if(x-size < 0)
+					{
+						collision_detected = true;
+						console.log("Collision detected preventing rotation.");
+					}
+					break;
+				case 3: // next is 4
+					// top right brick with right wall
+					if(x+size+size > canvas.width)
+					{
+						collision_detected = true;
+						console.log("Collision detected preventing rotation.");
+					}
+					// central brick with left wall
+					if(x-size < 0)
+					{
+						collision_detected = true;
+						console.log("Collision detected preventing rotation.");
+					}
+					break;
+				case 4: // next is 1
+					// right brick with right wall
+					if(x+size+size > canvas.width)
+					{
+						collision_detected = true;
+						console.log("Collision detected preventing rotation.");
+					}
+					// central brick with left wall
+					if(x-size < 0)
+					{
+						collision_detected = true;
+						console.log("Collision detected preventing rotation.");
+					}
+					break;
+			}
+			break;
+		case "T": // TODO
+			switch(brick_orientation)
+			{
+				case 1:
+				break;
+				case 2:
+				break;
+				case 3:
+				break;
+				case 4:
+				break;
+			}
+			break;
+		case "rL": // TODO
+			switch(brick_orientation)
+			{
+				case 1:
+				break;
+				case 2:
+				break;
+				case 3:
+				break;
+				case 4:
+				break;
+			}
+			break;
+		case "S": // TODO
+			switch(brick_orientation)
+			{
+				case 1:
+				break;
+				case 2:
+				break;
+				case 3:
+				break;
+				case 4:
+				break;
+			}
+			break;
+		case "rS": // TODO
+			switch(brick_orientation)
+			{
+				case 1:
+				break;
+				case 2:
+				break;
+				case 3:
+				break;
+				case 4:
+				break;
+			}
+			break;
+	}
+
 	// if a collision wasn't detected, rotate brick
 	if(!collision_detected)
 	{
@@ -589,11 +913,128 @@ function moveBrick(direction)
 				}
 			}
 
-			// TODO : detect walls according to shape
-		    if (x-dx < 0)
-		    {
-		        collision_detected = true;
-		    }
+			// detect walls collision according to shape
+		    switch(brick_type)
+			{
+				case ".": // OK !
+					if (x-dx < 0)
+				    {
+				        collision_detected = true;
+				        console.log("Collision detected preventing left movement.");
+				    }
+					break;
+				case "I": // TODO
+					switch(brick_orientation)
+					{
+						case 1:
+						break;
+						case 2:
+						break;
+						case 3:
+						break;
+						case 4:
+						break;
+					}
+					break;
+				case "o": // TODO
+					switch(brick_orientation)
+					{
+						case 1:
+						break;
+						case 2:
+						break;
+						case 3:
+						break;
+						case 4:
+						break;
+					}
+					break;
+				case "L":
+					switch(brick_orientation)
+					{
+						case 1:
+							if (x-size-dx < 0)
+						    {
+						        collision_detected = true;
+						        console.log("Collision detected preventing left movement.");
+						    }							
+							break;
+						case 2:
+							if (x-size-dx < 0)
+						    {
+						        collision_detected = true;
+						        console.log("Collision detected preventing left movement.");
+						    }							
+							break;
+						case 3:
+							if (x-size-dx < 0)
+						    {
+						        collision_detected = true;
+						        console.log("Collision detected preventing left movement.");
+						    }
+							break;
+						case 4:
+							if (x-dx < 0)
+						    {
+						        collision_detected = true;
+						        console.log("Collision detected preventing left movement.");
+						    }
+							break;
+					}
+					break;
+				case "T": // TODO
+					switch(brick_orientation)
+					{
+						case 1:
+						break;
+						case 2:
+						break;
+						case 3:
+						break;
+						case 4:
+						break;
+					}
+					break;
+				case "rL": // TODO
+					switch(brick_orientation)
+					{
+						case 1:
+						break;
+						case 2:
+						break;
+						case 3:
+						break;
+						case 4:
+						break;
+					}
+					break;
+				case "S": // TODO
+					switch(brick_orientation)
+					{
+						case 1:
+						break;
+						case 2:
+						break;
+						case 3:
+						break;
+						case 4:
+						break;
+					}
+					break;
+				case "rS": // TODO
+					switch(brick_orientation)
+					{
+						case 1:
+						break;
+						case 2:
+						break;
+						case 3:
+						break;
+						case 4:
+						break;
+					}
+					break;
+			}
 			
 			// if a collision wasn't detected, move
 			if(!collision_detected)
@@ -772,11 +1213,128 @@ function moveBrick(direction)
 				}
 			}
 
-			// TODO : detect walls according to shape
-	    	if (x + size + dx > canvas.width)
-	    	{
-	        	collision_detected = true;
-	    	}
+			// detect walls collision according to shape
+		    switch(brick_type)
+			{
+				case ".": // OK !
+					if (x+size+dx > canvas.width)
+				    {
+				        collision_detected = true;
+				        console.log("Collision detected preventing left movement.");
+				    }
+					break;
+				case "I": // TODO
+					switch(brick_orientation)
+					{
+						case 1:
+						break;
+						case 2:
+						break;
+						case 3:
+						break;
+						case 4:
+						break;
+					}
+					break;
+				case "o": // TODO
+					switch(brick_orientation)
+					{
+						case 1:
+						break;
+						case 2:
+						break;
+						case 3:
+						break;
+						case 4:
+						break;
+					}
+					break;
+				case "L":
+					switch(brick_orientation)
+					{
+						case 1:
+							if (x+size+size+dx > canvas.width)
+						    {
+						        collision_detected = true;
+						        console.log("Collision detected preventing left movement.");
+						    }							
+							break;
+						case 2:
+							if (x+size+dx > canvas.width)
+						    {
+						        collision_detected = true;
+						        console.log("Collision detected preventing left movement.");
+						    }							
+							break;
+						case 3:
+							if (x+size+size+dx > canvas.width)
+						    {
+						        collision_detected = true;
+						        console.log("Collision detected preventing left movement.");
+						    }
+							break;
+						case 4:
+							if (x+size+size+dx > canvas.width)
+						    {
+						        collision_detected = true;
+						        console.log("Collision detected preventing left movement.");
+						    }
+							break;
+					}
+					break;
+				case "T": // TODO
+					switch(brick_orientation)
+					{
+						case 1:
+						break;
+						case 2:
+						break;
+						case 3:
+						break;
+						case 4:
+						break;
+					}
+					break;
+				case "rL": // TODO
+					switch(brick_orientation)
+					{
+						case 1:
+						break;
+						case 2:
+						break;
+						case 3:
+						break;
+						case 4:
+						break;
+					}
+					break;
+				case "S": // TODO
+					switch(brick_orientation)
+					{
+						case 1:
+						break;
+						case 2:
+						break;
+						case 3:
+						break;
+						case 4:
+						break;
+					}
+					break;
+				case "rS": // TODO
+					switch(brick_orientation)
+					{
+						case 1:
+						break;
+						case 2:
+						break;
+						case 3:
+						break;
+						case 4:
+						break;
+					}
+					break;
+			}
 
 	    	// if a collision wasn't detected, move
 	    	if(!collision_detected)

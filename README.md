@@ -18,9 +18,11 @@ Just a personnal challenge. Work in progress !
 - wall detection for L shape
 - rotation collision detection
 - randomly choose NEXT brick on brickInit(), store it and display it
-- levels
+
 - more brick shapes
+
+- levels
+
 - game menu w/ high scores (stored in json ? xml ?)
-- next brick shape hint
 - html design
 - improve CSS structure (grid ?)

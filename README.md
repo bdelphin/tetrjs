@@ -6,10 +6,12 @@ Just a personnal challenge. Work in progress !
 ## STATUS
 - basic engine : OK
 - line completion : OK
-- brick shapes (with - almost working - collisions) :
-	- single dot : OK (to delete)
-	- L shaped brick : OK
-- wall detection for . & L shape : OK
+- brick shapes :
+	- single dot shape : OK (to delete)
+	- L shape : OK
+	- o shape : OK
+	- I shape : almost OK - TODO : fix saving brick when reaching bottom
+- wall and bricks collisions : OK
 - rotation collision detection : OK
 - game over : OK
 - line completion : OK

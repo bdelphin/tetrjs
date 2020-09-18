@@ -10,7 +10,7 @@ Just a personnal challenge. Work in progress !
 	- single dot shape : OK (to delete)
 	- L shape : OK
 	- o shape : OK
-	- I shape : almost OK - TODO : fix saving brick when reaching bottom
+	- I shape : OK
 - wall and bricks collisions : OK
 - rotation collision detection : OK
 - game over : OK

@@ -85,7 +85,7 @@ function brickInit()
 			case "I": // OK !
 				switch(brick_orientation)
 				{
-					case "1":
+					case 1:
 						// central dot
 						bricks[brick_count] = { x: x, y: y, color: color, brick_type: "."};
 						brick_count++;
@@ -104,7 +104,7 @@ function brickInit()
 
 						console.log("saved brick I 1");
 					break;
-					case "2":
+					case 2:
 						// central dot
 						bricks[brick_count] = { x: x, y: y, color: color, brick_type: "."};
 						brick_count++;
@@ -123,7 +123,7 @@ function brickInit()
 
 						console.log("saved brick I 2");
 					break;
-					case "3":
+					case 3:
 						// central dot
 						bricks[brick_count] = { x: x, y: y, color: color, brick_type: "."};
 						brick_count++;
@@ -142,7 +142,7 @@ function brickInit()
 
 						console.log("saved brick I 3");
 					break;
-					case "4":
+					case 4:
 						// central dot
 						bricks[brick_count] = { x: x, y: y, color: color, brick_type: "."};
 						brick_count++;

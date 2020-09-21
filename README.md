@@ -11,15 +11,17 @@ Just a personnal challenge. Work in progress !
 	- L shape : OK
 	- o shape : OK
 	- I shape : OK
+	- T shape : OK
 - wall and bricks collisions : OK
 - rotation collision detection : OK
 - game over : OK
 - line completion : OK
 - score : OK
+- levels : OK
 
 ## TODO
+- OOP & collision system update
 - more brick shapes
-- levels
 
 - improve next brick display
 - game menu w/ high scores (stored in json ? xml ?)

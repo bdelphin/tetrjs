@@ -18,12 +18,17 @@ Just a personnal challenge. Work in progress !
 - line completion : OK
 - score : OK
 - levels : OK
+- menu & gameover screen : OK
+- bootstrap : OK
 
 ## TODO
-- OOP & collision system update
+- gameover screen : fix scroll issue
 - more brick shapes
-
 - improve next brick display
-- game menu w/ high scores (stored in json ? xml ?)
+- working high scores (stored in json ? xml ?)
 - html design
-- improve CSS structure (grid ?)
+- phone compatibility : https://stackoverflow.com/questions/2264072/detect-a-finger-swipe-through-javascript-on-the-iphone-and-android
+
+# v2
+- OOP
+- collision system update

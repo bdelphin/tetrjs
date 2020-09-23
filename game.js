@@ -7,6 +7,13 @@ var score = 0;
 var level_text = document.getElementById("level");
 var level = 0;
 
+var menu_screen = document.getElementById("menu_screen");
+var game_screen = document.getElementById("game_screen");
+var gameover_screen = document.getElementById("gameover_screen");
+
+var gameover_level_text = document.getElementById("gameover_level_text");
+var gameover_score_text = document.getElementById("gameover_score_text");
+
 var lines_completed = 0;
 
 var next_brick_text = document.getElementById("next_brick");
@@ -17,7 +24,7 @@ var audio_fall = new Audio('fall.wav');
 var audio_gameover = new Audio('gameover.wav');
 
 let sprite = document.getElementById("bricks_sprite");
-// Define the size of individual sprite frame
+// define the size of individual sprite frame
 let frameWidth = 84;
 let frameHeight = 84;
 
@@ -62,31 +69,70 @@ var upReleased = true;
 
 var collision_detected = false;
 
-// bricks array & counter
+// bricks array & count
 var bricks = [];
-/*for(var i=0; i<99; i++) 
-{
-    bricks[i] = { x: 0, y: 0, color: ""};
-}*/
 var brick_count = 0;
 
 // spawn first brick
 var firstBrick = true;
 
+var fallId;
+var drawId;
+var moveId;
 
-gameInit();
+//gameInit();
+
+
 
 // init game parameters
 function gameInit()
 {
+	// hide menu screen & show game screen
+	menu_screen.style.display = 'none';
+	game_screen.style.display = 'block';
+
 	score = 0;
 	score_text.innerHTML = score;
 	level = 0;
 	level_text.innerHTML = level;
+
+	lines_completed = 0;
 	brick_count = 0;
 	firstBrick = true;
 
+	fallId = setInterval(fall, 600);
+	drawId = setInterval(draw, 10);
+	moveId = setInterval(move, 50);
+
 	brickInit();
+}
+
+// gameOver screen
+function gameOver()
+{
+	// stop game
+	clearInterval(fallId);
+	clearInterval(drawId);
+	clearInterval(moveId);
+
+	gameover_level_text.innerHTML = level;
+	gameover_score_text.innerHTML = score;
+
+	// play gameover sound effect
+	audio_gameover.play();
+
+	// hide game screen & show gameover screen
+	gameover_screen.style.display = 'block';
+	game_screen.style.display = 'none';
+
+	//gameInit();
+}
+
+// show menu screen & hide gameover screen
+function backToMenu()
+{
+	menu_screen.style.display = 'flex';
+	gameover_screen.style.display = 'none';
 }
 
 // spawn new brick
@@ -442,10 +488,7 @@ function brickInit()
 		{
 			if(y+dy>=bricks[i].y && x==bricks[i].x)
 			{
-				audio_gameover.play();
-				alert("GAME OVER !");
-	
-				gameInit();
+				gameOver();
 			}
 		}
 		
@@ -537,9 +580,6 @@ function draw()
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
 
-var fallId = setInterval(fall, 600-(level*10*2));
-var drawId = setInterval(draw, 10);
-var moveId = setInterval(move, 50);
 
 // rotate current brick (if there's no collision with walls or other bricks)
 function rotateBrick()
